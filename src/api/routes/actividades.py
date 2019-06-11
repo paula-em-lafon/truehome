@@ -1,10 +1,8 @@
 from flask import Blueprint
 from flask import request
-from flask import jsonify
 import requests
-import json
-import ast
 import os
+import gzip
 
 actividades_bp = Blueprint('actividades', __name__,
                            url_prefix='/api/v1/actividades')
@@ -20,8 +18,8 @@ def create_get_meth():
     if request.method == 'GET':
         response = requests.get(os.environ.get('API_URL') + '/activities',
                                 params=args, data=request.form)
-    res_dict = response.json()
-    return (jsonify(res_dict), response.status_code)
+    res_gzip = gzip.compress(response.content)
+    return (res_gzip, response.status_code, response.headers.items())
 
 
 @actividades_bp.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
@@ -38,5 +36,5 @@ def delete_get_put_w_id(id):
     if request.method == 'DELETE':
         response = requests.delete(os.environ.get('API_URL') + '/activities/' +
                                    pid, params=args)
-    res_dict = response.json()
-    return (jsonify(res_dict), response.status_code)
+    res_gzip = gzip.compress(response.content)
+    return (res_gzip, response.status_code, response.headers.items())
