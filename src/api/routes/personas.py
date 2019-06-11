@@ -5,6 +5,7 @@ import requests
 import json
 import ast
 import os
+import pprint
 
 personas_bp = Blueprint('personas', __name__, url_prefix='/api/v1/personas')
 
@@ -47,5 +48,27 @@ def delete_get_put_w_id(id):
     if request.method == 'DELETE':
         response = requests.delete(os.environ.get('API_URL') + '/persons/' +
                                    pid, params=args)
+    res_dict = response.json()
+    return (jsonify(res_dict), response.status_code)
+
+
+@personas_bp.route('/<id>/actividades', methods=['GET'])
+def get_activities_by_user(id):
+    pid = str(id)
+    args = request.args.to_dict()
+    args['api_token'] = os.environ.get('API_TOKEN')
+    response = requests.get(os.environ.get('API_URL') + '/persons/' +
+                            pid + '/activities', params=args)
+    res_dict = response.json()
+    return (jsonify(res_dict), response.status_code)
+
+
+@personas_bp.route('/<id>/deals', methods=['GET'])
+def get_deals_by_user(id):
+    pid = str(id)
+    args = request.args.to_dict()
+    args['api_token'] = os.environ.get('API_TOKEN')
+    response = requests.get(os.environ.get('API_URL') + '/persons/' +
+                            pid + '/deals', params=args)
     res_dict = response.json()
     return (jsonify(res_dict), response.status_code)

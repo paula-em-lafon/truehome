@@ -24,16 +24,6 @@ def create_get_meth():
     return (jsonify(res_dict), response.status_code)
 
 
-@actividades_bp.route('/find', methods=['GET'])
-def find_activity():
-    args = request.args.to_dict()
-    args['api_token'] = os.environ.get('API_TOKEN')
-    response = requests.get(os.environ.get('API_URL') + '/activities/find',
-                            params=args, data=request.form)
-    res_dict = response.json()
-    return (jsonify(res_dict), response.status_code)
-
-
 @actividades_bp.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
 def delete_get_put_w_id(id):
     pid = str(id)
