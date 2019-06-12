@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from api.routes import personas
 from api.routes import actividades
 from api.routes import deals
+from api.routes.swagger import swaggerui_blueprint
 from flask_swagger import swagger
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ app = Flask(__name__)
 app.register_blueprint(personas.personas_bp)
 app.register_blueprint(actividades.actividades_bp)
 app.register_blueprint(deals.deals_bp)
+app.register_blueprint(swaggerui_blueprint, url_prefix='/api/docs')
 
 
 @app.route("/api/v1/spec")

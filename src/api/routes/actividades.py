@@ -10,6 +10,33 @@ actividades_bp = Blueprint('actividades', __name__,
 
 @actividades_bp.route('/', methods=['GET', 'POST'])
 def create_get_meth():
+    """
+    create and retrieve list of activities
+    ---
+      post:
+        summary: Creates an activity.   
+        requestBody:
+          description: activityID
+          required: true
+          description: The ID of the user to return.
+          content:
+            application/json:
+              schema:
+                subject: 
+                  type: integer
+                  format: int64
+                  minimum: 1
+      responses:
+        responses:
+          '200':    # status code
+            description: A JSON array of user names
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: string
+    """
     args = request.args.to_dict()
     args['api_token'] = os.environ.get('API_TOKEN')
     if request.method == 'POST':
